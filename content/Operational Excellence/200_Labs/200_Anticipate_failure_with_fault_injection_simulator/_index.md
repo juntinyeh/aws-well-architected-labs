@@ -1,5 +1,5 @@
 ---
-title: "200 - Anticipate failure with Fault Injection Simulator"
+title: "200 - Anticipate failure and learn from operational failures"
 ## menutitle: "Lab #2"
 date: 2020-11-08T10:21:08-04:00
 chapter: false
@@ -18,12 +18,13 @@ hidden: false
 
 In an architecture design, we want to keep the continuity of service to make sure it deliver highest business objective. That's how we usually describe the availability and reliability. Before we launch every deployment onto production environment for our external customer, a "pre-mortem" exercise to indentify and remove any potential source of failure will inprove the confidence to our operational objective. 
 
-In this lab, we use standard 3-tier website as an example, and exericse fault injection toward the application layer, the EC2 instance in autoscaling group. Within different scenario, we want to practice how to perform a failure simulation and incident response. 
+In this lab, we use standard 3-tier website as an example, and we practice the "pre-mortem" exericse with fault injection toward the application layer, the EC2 instance in autoscaling group. In different scenarios, we practice how the incident response with operational failure.
 
 With the propose to anticipate failure, we choose typical case High CPU Utilization status as an example, which it will force application service uncapable to take any external request, and lead to service unavailable. Target the expected response action from our design, we expect our EC2 autoscaling group can scale out and add instance capacity to keep the service continuity.
 To validate this mechanism, we inject a simulation event into the system and check if the expected response did take place. If response action not as expectation, then it is the potential point of failure, which need to be remediated immediately. To diagnose, we will first validate the simulation did take place from multiple observation angle, then check the responding mechanism is well configured. 
 
 ## Services 
+* [Amazon EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html)
 * [AWS Fault Injection Simulator](https://docs.aws.amazon.com/fis/latest/userguide/what-is.html)
 * [Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html)
 * [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)
