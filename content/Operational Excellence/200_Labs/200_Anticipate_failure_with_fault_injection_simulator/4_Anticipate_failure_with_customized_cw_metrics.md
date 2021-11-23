@@ -10,9 +10,45 @@ pre: "<b>4. </b>"
 
 ### 4.1 Prepare for "Low Memory Failure" experiment
 
-From Step.3, we discovered that autoscaling policies was not configured correctly. Now we want to build up a dynamic policy to make sure the scaling mechanism create sufficient memory space on application layer.
+From [Step.3](../3_run_fault_injection_and_fixed_built_in_policy/), we discovered that autoscaling policies was not configured correctly. Now we want to build up a dynamic policy to make sure the scaling mechanism create sufficient memory space on application layer.
 
-In our cloudformation stack, we had cloudwatch agent installed in every EC2 instance. And the memory related metrics already been configured as follow. To prevent system creash, We stick with metric "**mem_available_percent**", make sure the scaling mechanism been triggere whenever available percentage dropping less than 25%.
+In our CloudFormation stack, we had CloudWatch agent installed in every EC2 instance. The memory related metrics already been configured at initialized. To prevent system creash, we leverage the "**mem_available_percent**" metric, make sure the scaling mechanism been triggere whenever available percentage dropping less than 25%.
+
+{{% notice note %}}
+In this step, we levearge AWS Command Line Interface to create Auto Scaling Policy and CloudWatch Metric Alarm. To set up the scaling mechanism with memory utilization. User can choose to run the command line with own environment or use browser-based environment [AWS CloudShell](https://docs.aws.amazon.com/cloudshell/latest/userguide/welcome.html). ***We recommend to use AWS CloudShell*** if you net yet have available any existed CLI environment. And please noted, the IAM should have following permissions: 
+{{% /notice %}}
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+              "autoscaling:UpdateAutoScalingGroup",
+              "autoscaling:DescribeAutoScalingGroups",
+              "autoscaling:PutScalingPolicy",
+              "autoscaling:DescribePolicies",
+              "autoscaling:DeletePolicy",
+              "cloudwatch:PutMetricAlarm",
+              "cloudwatch:DeleteAlarm"
+              ]
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+{{%expand "Setup awscli on your environment"%}}
+* [What is AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
+* [Getting Started with AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
+* [AWS CLI User Guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+{{%/expand%}}
+
+{{%expand "Using CloudShell on AWS Console"%}}
+* [Setup AWS CloudShell on AWS Console](https://aws.amazon.com/blogs/aws/aws-cloudshell-command-line-access-to-aws-resources/)
+{{%/expand%}}
+
 
 ```
   "metrics": {
@@ -118,5 +154,8 @@ aws fis start-experiment --experiment-template-id <TEMPLATE_ID> --region <REGION
 
  
 
+### Reference
+* Setup IAM permission for Auto Scaling https://docs.aws.amazon.com/autoscaling/plans/userguide/security_iam_id-based-policy-examples.html
+* CloudWatch Permissions Reference https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/permissions-reference-cw.html 
 
-{{< prev_next_button link_prev_url="../3_build_run_investigative_playbook/" link_next_url="../4_build_run_remediation_runbook/" />}}
+{{< prev_next_button link_prev_url="../3_run_fault_injection_and_fixed_built_in_policy/" link_next_url="../4_build_run_remediation_runbook/" />}}
